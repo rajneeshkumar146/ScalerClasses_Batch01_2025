@@ -4,41 +4,50 @@
     <title>Marksheet</title>
 </head>
 
+<style>
+    input[type="radio"] {
+        appearance: none;
+        /* Remove default styling */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        width: 16px;
+        height: 16px;
+        border: 2px solid #000;
+        border-radius: 3px;
+        outline: none;
+        cursor: pointer;
+        position: relative;
+    }
+
+    input[type="radio"]:checked {
+        background-color: #000;
+    }
+
+    label {
+        margin-right: 20px;
+        font-family: Arial, sans-serif;
+        cursor: pointer;
+    }
+</style>
+
 <body>
-    <form>
-        <label for="name">Name:</label>
-        <input type='text' id='name' name='name'>
-        <label for="email">Email:</label>
-        <input type='email' id='email' name='email'>
-        <label for="phone">Phone</label>
-        <input type='number' id='phone' name='phone' maxlength='10'>
-        <label for="age">Age:</label>
-        <input type='number' id='age' name='age' maxlength='2'>
-        <label for="dob">Birthday:</label>
-        <input type='date' id='dob' name='dob'>
-        <div>
-            <p>Food</p>
-            <input type='checkbox'>Apple</input>
-            <input type='checkbox'>Orange</input>
-            <input type='checkbox'>Banana</input>
-        </div>
-        <div>
-            <p>Gender</p>
-            <input type="radio" id="apple" name="food" value="apple">
-            <label for="apple">Apple</label><br>
-            <input type="radio" id="orange" name="food" value="orange">
-            <label for="orange">Orange</label><br>
-            <input type="radio" id="banana" name="food" value="banana">
-            <label for="banana">Banana</label>
-        </div>
-        <label for="ec">Eyecolor:</label>
-        <select id="ec" name="ec">
-            <option value="blue">Blue</option>
-            <option value="black">Black</option>
-            <option value="brown">Brown</option>
-        </select>
-        </div>
-    </form>
+
+    <fieldset>
+        <legend>Select Your Favorite Food:</legend>
+
+        <input type="radio" id="pizza" name="food" value="Pizza">
+        <label for="pizza">Pizza</label>
+
+        <input type="radio" id="burger" name="food" value="Burger">
+        <label for="burger">Burger</label>
+
+        <input type="radio" id="pasta" name="food" value="Pasta">
+        <label for="pasta">Pasta</label>
+
+        <input type="radio" id="salad" name="food" value="Salad">
+        <label for="salad">Salad</label>
+
+    </fieldset>
 </body>
 
 </html>
