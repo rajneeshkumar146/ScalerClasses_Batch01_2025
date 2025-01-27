@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        /* All c2 class become blue. */
+        /* .c2{
+            color: blue;
+        } */
+
+        /* It will not work, It will apply blue color on entire div. */
+        /* .c3{
+            color: blue;
+        } */
+
+        /*  [.c1 .c2],[.c4 .c2],[.c3 .c2]*/
+        .c3 .c2 {
+            color: blue;
+        }
+
+        .c1 p{
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Select "I'm here. find me" and make it blue  -->
+    <div class="c1">
+        <div class="c4">
+            <div class="c3">
+                <span>
+                    <div class="c2">I'm here. find me</div>
+                </span>
+                <p>I am also here</p>
+            </div>
+        </div>
+    </div>
+    <span>
+        <div class="c2">Dont select me</div>
+    </span>
+</body>
+
+</html>
