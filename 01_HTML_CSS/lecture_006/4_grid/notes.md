@@ -1,0 +1,1 @@
+CSS Grid Layout is a layout in CSS that allows you to create two-dimensional grid layouts for arranging and aligning elements on a web page. It provides a powerful way to structure and design both rows and columns of content, allowing for complex and flexible layouts.

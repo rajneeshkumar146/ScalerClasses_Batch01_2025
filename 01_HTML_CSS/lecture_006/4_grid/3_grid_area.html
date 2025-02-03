@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid Layout</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-size: 20px;
+        height: 100vh;
+    }
+</style>
+
+<body>
+    <header>Header</header>
+    <main>Content</main>
+    <nav>Navigation Bar</nav>
+    <aside>SideBar</aside>
+    <footer>footer</footer>
+</body>
+
+</html>
+So, now we have created a basic layout of the application.
+
+for initializing grid in our application, we can use display: grid; property.
+
+body{
+font-size: 20px;
+height: 100vh;
+display: grid;
+}
+now lets give some borders and colors to all the elements.
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid Layout</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-size: 20px;
+        height: 100vh;
+        display: grid;
+    }
+
+    header,
+    main,
+    nav,
+    aside,
+    footer {
+        background-color: tomato;
+        color: white;
+        padding: 20px;
+        border: skyblue 1px solid;
+    }
+</style>
+
+<body>
+    <header>Header</header>
+    <main>Content</main>
+    <nav>Navigation Bar</nav>
+    <aside>SideBar</aside>
+    <footer>footer</footer>
+</body>
+
+</html>
