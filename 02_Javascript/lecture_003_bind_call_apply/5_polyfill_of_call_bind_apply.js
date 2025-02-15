@@ -77,10 +77,14 @@ Function.prototype.myBind = function (requiredObject) {
     // get your function.
     const functionToBeInvoked = this;
 
+    return function (...arrayAsArgument) {
+        functionToBeInvoked.call(requiredObject, ...arrayAsArgument);
+    }
+
 }
 
 
 
-// const boundFn = cap.petersTeam.myBind(ironMan);
+const boundFn = cap.petersTeam.myBind(ironMan);
 boundFn("Thor Bansal", "Rajneesh Kumar")
 
