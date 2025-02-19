@@ -85,6 +85,19 @@ Function.prototype.myBind = function (requiredObject) {
 
 
 
-const boundFn = cap.petersTeam.myBind(ironMan);
-boundFn("Thor Bansal", "Rajneesh Kumar")
+// const boundFn = cap.petersTeam.myBind(ironMan);
+// boundFn("Thor Bansal", "Rajneesh Kumar")
+
+// let cap2 = {
+//     name2: "Steve",
+//     sayHi: () => {
+//         console.log("Hi From: ", this.name2);
+//     }
+// }
+
+// cap2.sayHi();
+// let sayHiAdd = cap2.sayHi;
+// sayHiAdd();
+
+
 
