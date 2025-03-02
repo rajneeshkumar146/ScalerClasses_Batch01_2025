@@ -10,12 +10,17 @@ let priceofOne = 20;
  * and it calls the cb for us
  * */
 
-runMlAlgo(cb);
+// runMlAlgo(cb);
 function cb() {
     amount = amount - priceofOne;
     console.log("Left Amount: ", amount);
 }
 
-// console.log("Final Left Amount: ", amount);
+pRunMlAlgo().then(() => {
+    cb();
+}).catch((err) => {
+    console.log("Ohh! I hit by error: ", err);
+})
+
 
 console.log("After");

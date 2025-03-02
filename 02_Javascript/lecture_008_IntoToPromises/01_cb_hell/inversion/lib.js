@@ -19,10 +19,10 @@ function pRunMlAlgo() {
         setTimeout(function () {
             console.log("payment done");
             resolve();
-            // resolve();   // Ignored
-            // resolve();   // Ignored
-            // resolve();   // Ignored
-            // resolve();   // Ignored
+            resolve();   // Ignored
+            resolve();   // Ignored
+            resolve();   // Ignored
+            resolve();   // Ignored
         }, 1000);
 
     });
