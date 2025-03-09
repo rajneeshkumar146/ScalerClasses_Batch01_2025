@@ -35,8 +35,8 @@ const fs = require("fs");
 /** statement 3 */
 const promise1 = Promise.resolve(100);
 const promise2 = Promise.resolve(200);
-const promise3 = Promise.resolve(300);
-const promise4 = Promise.resolve(400);
+const promise3 = Promise.reject(300);
+const promise4 = Promise.reject(400);
 
 const promiseAll = async () => {
     console.log("1: ");
