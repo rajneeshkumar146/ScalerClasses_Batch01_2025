@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button>click Me </button>
+    <input type="text">
+    <ul></ul>
+</body>
+
+<script>
+
+    const button = document.querySelector("button");
+    const input = document.querySelector("input");
+    const ul = document.querySelector("ul");
+
+    button.addEventListener("click", cb);
+
+    function cb() {
+        if (input.value.trim().length == 0) {
+            return;
+        }
+        // console.log("How are you!!!");
+
+        //create.
+        const li = document.createElement("li");
+        const value = input.value;
+        // console.log(value);
+
+        // content.
+        li.innerText = value;
+
+        //add.
+        ul.appendChild(li);
+
+        // Refresh your input section.
+        input.value = "";
+    }
+
+
+</script>
+
+</html>
