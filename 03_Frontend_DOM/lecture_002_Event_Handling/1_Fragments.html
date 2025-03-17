@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>List Items</h1>
+    <ul id="listContainer">
+        <li>fddf</li>
+        <li>fddf</li>
+        <li>fddf</li>
+        <li>fddf</li>
+        <li>fddf</li>
+        <li>fddf</li>
+        <li>fddf</li>
+        <li>fddf</li>
+
+
+    </ul>
+
+</body>
+<script>
+    let ul = document.querySelector("#listContainer");
+    let N = 90000;
+
+    // T: O(N^2)
+    // for(let i = 0 ; i < N ;i++){
+    //     // Creation.
+    //     let newLi = document.createElement("li");  // O(1)
+
+    //     // update.
+    //     // newLi.textContent = `Item ${i}`; // O(1)
+
+    //     // Append.
+    //     ul.append(newLi);  // O(N), Because of DOM redering it become O(N)
+    // }
+
+    // Smarter way to solve above problem.
+    let fragment = document.createDocumentFragment();
+
+    // O(N)
+    for (let i = 0; i < N; i++) {
+        // Creation.
+        let newLi = document.createElement("li");  // O(1)
+
+        // update.
+        newLi.textContent = `Item ${i}`; // O(1)
+
+        // Append.
+        fragment.append(newLi);  // O(1).
+    }
+
+    // O(N)
+    ul.appendChild(fragment);
+
+</script>
+
+</html>
