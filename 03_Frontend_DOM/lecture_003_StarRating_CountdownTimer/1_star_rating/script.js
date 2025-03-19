@@ -18,11 +18,16 @@ const starArray = document.querySelectorAll(".star");
 
 let clickedStarIndex = 0;
 let RATING_COLOR = "blue";
+let DEFAULT_COLOR = "gray";
 
 // Event Listners
 // Event Listner of click on star.
 starContainer.addEventListener("click", (event) => {
-
+    if(event.target.hasAttribute("idx")){
+        clickedStarIndex = event.target.getAttribute("idx");
+        fillStarsWithRatingColorUpToIndex(clickedStarIndex);
+        countSpan.textContent = clickedStarIndex;
+    }
 });
 
 
@@ -39,3 +44,15 @@ starContainer.addEventListener("mouseleave", (event) => {
 
 
 // Helper Methods.
+
+function resetAllStarsToDefaultColor() {
+    for (star of starArray) {
+        star.classList.remove(RATING_COLOR);
+    }
+}
+
+function fillStarsWithRatingColorUpToIndex(clickedStarIndex) {
+    for (let currentStarIndex = 0; currentStarIndex < clickedStarIndex; clickedStarIndex++) {
+        starArray[currentStarIndex].classList.add(RATING_COLOR);
+    }
+}
