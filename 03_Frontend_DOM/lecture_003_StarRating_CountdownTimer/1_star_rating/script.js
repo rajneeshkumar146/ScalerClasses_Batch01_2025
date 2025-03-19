@@ -12,7 +12,7 @@
  */
 
 
-const starContainer = document.querySelector(".star_container");
+const starContainer = document.querySelector("#star_container");
 const countSpan = document.querySelector("#count");
 const starArray = document.querySelectorAll(".star");
 
@@ -33,13 +33,17 @@ starContainer.addEventListener("click", (event) => {
 
 // Event Listner of MouseHover.
 starContainer.addEventListener("mouseover", (event) => {
+    if(event.target.hasAttribute("idx")){
+        let currentHoverIndex = event.target.getAttribute("idx");
+        fillStarsWithRatingColorUpToIndex(currentHoverIndex);
+    }
 
 });
 
 
 // Event Listner of MouseLeave.
 starContainer.addEventListener("mouseleave", (event) => {
-
+    fillStarsWithRatingColorUpToIndex(clickedStarIndex);
 });
 
 
@@ -52,6 +56,8 @@ function resetAllStarsToDefaultColor() {
 }
 
 function fillStarsWithRatingColorUpToIndex(clickedStarIndex) {
+    resetAllStarsToDefaultColor();
+
     for (let currentStarIndex = 0; currentStarIndex < clickedStarIndex; clickedStarIndex++) {
         starArray[currentStarIndex].classList.add(RATING_COLOR);
     }
