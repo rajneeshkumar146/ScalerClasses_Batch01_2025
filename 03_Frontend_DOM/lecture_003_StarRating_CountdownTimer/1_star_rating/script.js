@@ -19,14 +19,23 @@ const starArray = document.querySelectorAll(".star");
 let clickedStarIndex = 0;
 let RATING_COLOR = "blue";
 
-
+// Event Listners
 // Event Listner of click on star.
+starContainer.addEventListener("click", (event) => {
+
+});
 
 
 // Event Listner of MouseHover.
+starContainer.addEventListener("mouseover", (event) => {
+
+});
 
 
 // Event Listner of MouseLeave.
+starContainer.addEventListener("mouseleave", (event) => {
+
+});
 
 
 // Helper Methods.
