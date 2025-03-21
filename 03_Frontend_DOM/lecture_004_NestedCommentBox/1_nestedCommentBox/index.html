@@ -4,23 +4,36 @@
     Question: Build mutiple comment box.
 
     use Case:
-
-    Flavour:
-        1. JSON Data -> file system.
+        1. Multiple reply(Example slack, redit)
+        2. Feedback box i-th mutiple thread
+        3. fb chat 
+        4. Blog comment box.
 
     Must have feature:
-
+        1. Number of thread it is unlimited/How deep tree cab be?
+        2. Display comment and reply button on screen. 
 
     Good to have features:
+        1. Option of reaction(emojies) over replies.
+        2. We have to presist the entire comment thread in some DB/Local storage.
 
+     Flavour:
+        1. JSON Data -> file system.
 
     Approch:
        1. HTML/CSS.
           a. Get the static HTML.
+          b. I try  to simulate the dynamic behaviour of my project via static html. To see how my JS will change the dom.
 
        2. Javascript:
+       a. Event Listners:
+                i. reply button -> after click I will see a input box and submit button.
+                ii. Once submit button is clicked we have to show the input on my HTML.
 
        3. Edge cases:
+          i. Empty comment.
+          ii. If person invoked reply action multiple times, this should be count as a once.
+          iii. If we click some where else input box should be vanished.
 -->
 
 <!DOCTYPE html>
@@ -42,6 +55,38 @@
                 <h3 class="comment_text">Good Morning Everyone, How are you?</h3>
                 <div class="reply">Reply</div>
             </div>
+
+            <!-- Threads -->
+<!--             
+            <div class="comment-container">
+                <div class="comment_card">
+                    <h3 class="comment_text">Thanks for asking, How are you</h3>
+                    <div class="reply">Reply</div>
+                </div>
+
+                <div class="comment-container">
+                    <div class="comment_card">
+                        <h3 class="comment_text">What about you?</h3>
+                        <div class="reply">Reply</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="comment-container">
+                <div class="comment_card">
+                    <h3 class="comment_text">cool!!!</h3>
+                    <div class="reply">Reply</div>
+                </div>
+            </div>
+   -->
+            <!-- Input Box -->
+            <!-- 
+                <div class="comment_reply_container">
+                <input type="text" placeholder="Type your comment here....">
+                <button class="btn-submit">Submit</button>
+                </div> 
+             -->
 
 
 
