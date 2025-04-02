@@ -1,11 +1,39 @@
 
 const toolBoxPriorityContainer = document.querySelector(".toolbox-priority-cont");
 const mainContainer = document.querySelector(".main_cont");
+const uid = new ShortUniqueId();
 
 const addBtn = document.querySelector(".add-btn");
 const removeBtn = document.querySelector(".remove-btn");
 
 let COLORS = ["pink", "blue", "purple", "green"]
+let LOCAL_STORAGE_KEY = "KanabanBoardTickets";
+
+//========================= Local Storage ========================
+
+let ALL_TICKETS = localStorage.getItem(LOCAL_STORAGE_KEY) || [];
+
+// Initate the KanabanBoardApplication.
+(() => {
+    if (typeof ALL_TICKETS === "string") {
+        ALL_TICKETS = JSON.parse(ALL_TICKETS);
+        // populateUi();
+    }
+
+    enableKanabanBoardFunctionality();
+})();
+
+function enableKanabanBoardFunctionality() {
+    filterTickets();
+    deleteBtnEventListner();
+    modalCreation();
+}
+
+function populateUi() {
+    for (ticket of ALL_TICKETS) {
+        buildTicketWithAllFeatures(ticket.content, ticket.color, ticket.isLocked, ticket.id);
+    }
+}
 
 
 //========================= Lock and Unlock ========================
@@ -104,23 +132,152 @@ function deleteBtnEventListner() {
         } else {
             removeBtn.style.color = "";
         }
-        
+
         event.stopImmediatePropagation();
     });
 }
 
-//=========================  Testing purpose only: Calling methods ===========================
+//========================= Modal and ticket creation ===========================
 
-const ticketContainerList = mainContainer.querySelectorAll(".ticket-cont");
-const ticketAreaList = mainContainer.querySelectorAll(".ticket-area");
-const lockBtnList = mainContainer.querySelectorAll(".lock-unlock");
-const ticketColorEleList = mainContainer.querySelectorAll(".ticket-color");
+function modalCreation() {
+    const modal = document.querySelector(".modal-cont");
+    const priorityColorSetModal = modal.querySelector(".priority-color-cont");
+    const priorityColorArrayOfModal = modal.querySelectorAll(".priority-color");
 
-for (let i = 0; i < ticketContainerList.length; i++) {
-    deleteListner(ticketContainerList[i]);
-    addToggleColor(ticketColorEleList[i]);
-    addLockAndUnlock(ticketAreaList[i], lockBtnList[i]);
+    addBtnEventListner(modal, priorityColorArrayOfModal);
+    activeColorToCreateTicket(priorityColorSetModal, priorityColorArrayOfModal);
+    createTicketWithContentAndActiveColor(modal, priorityColorArrayOfModal);
 }
 
-filterTickets();
-deleteBtnEventListner();
+
+function addBtnEventListner(modal, priorityColorArrayOfModal) {
+    addBtn.addEventListener("click", () => {
+        resetActiveStatusOfColorModal(priorityColorArrayOfModal);
+        modal.style.display = "flex";
+    });
+
+    addBtn.addEventListener("dblclick", () => {
+        modal.style.display = "none";
+    });
+}
+
+function activeColorToCreateTicket(priorityColorSetModal, priorityColorArrayOfModal) {
+    priorityColorSetModal.addEventListener("click", (event) => {
+        if (event.target === event.currentTarget) {
+            return;
+        }
+
+        resetActiveStatusOfColorModal(priorityColorArrayOfModal);
+
+        event.target.classList.add("active");
+    });
+}
+
+function resetActiveStatusOfColorModal(priorityColorArrayOfModal) {
+    for (priorityColor of priorityColorArrayOfModal) {
+        priorityColor.classList.remove("active");
+    }
+}
+
+function createTicketWithContentAndActiveColor(modal, priorityColorArrayOfModal) {
+    modal.addEventListener("keypress", (event) => {
+        event.stopPropagation();
+        if (event.key !== "Enter") {
+            return;
+        }
+
+        let textArea = modal.querySelector(".textarea-cont");
+        let writtenContent = textArea.value;
+
+        // get the selected color at the time of cretaion of modal.
+        let activeColor = getActiveColorFromModalColorArray(priorityColorArrayOfModal);
+
+        const id = uid();
+        buildTicketWithAllFeatures(writtenContent, activeColor,/** isLocked= */true, id);
+
+        textArea.value = "";
+        modal.style.display = "none";
+        resetActiveStatusOfColorModal(priorityColorArrayOfModal);
+    });
+}
+
+
+function buildTicketWithAllFeatures(writtenContent, activeColor, isLocked, currentId) {
+    if (writtenContent === "" || writtenContent.trim().length === 0) {
+        return;
+    }
+
+    let lockOrUnlock = isLocked ? "fa-lock" : "fa-lock-open";
+
+    const ticketContainer = document.createElement("div");
+    ticketContainer.setAttribute("class", "ticket-cont");
+    ticketContainer.innerHTML =
+        `<div class="ticket-color ${activeColor}"></div>
+    <div class="ticket-id">#${currentId}</div>
+    <div class="ticket-area">${writtenContent}</div>
+    <div class="lock-unlock"><i class="fa-solid ${lockOrUnlock}"></i></div>`;
+
+    mainContainer.appendChild(ticketContainer);
+
+    // attack other features like lock-unlock, togglecoloe etc.,
+
+    // Lock-Unlock;
+    const ticketArea = ticketContainer.querySelector(".ticket-area");
+    const lockBtn = ticketContainer.querySelector(".lock-unlock");
+    addLockAndUnlock(ticketArea, lockBtn);
+
+    // Toggle Color.
+    const ticketColorEle = ticketContainer.querySelector(".ticket-color");
+    addToggleColor(ticketColorEle);
+
+    // Delete Event Listner.
+    deleteListner(ticketContainer);
+
+    createTicketObjAndUpdateLocalStorgae(writtenContent, activeColor, isLocked, currentId);
+}
+
+function getActiveColorFromModalColorArray(priorityColorArrayOfModal) {
+    let activeColor = "green";
+    for (priorityColor of priorityColorArrayOfModal) {
+        if (priorityColor.classList.contains("active")) {
+            activeColor = priorityColor.classList[1];
+            break;
+        }
+    }
+
+    return activeColor;
+}
+
+function createTicketObjAndUpdateLocalStorgae(writtenContent, activeColor, isLocked, currentId) {
+    let ticketObj = {
+        id: currentId,
+        content: writtenContent,
+        color: activeColor,
+        isLocked: isLocked
+    };
+
+    ALL_TICKETS.push(ticketObj);
+    updateLocalStorage();
+}
+
+function updateLocalStorage() {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(ALL_TICKETS))
+}
+
+
+//=========================  Testing purpose only: Calling methods ===========================
+
+// const ticketContainerList = mainContainer.querySelectorAll(".ticket-cont");
+// const ticketAreaList = mainContainer.querySelectorAll(".ticket-area");
+// const lockBtnList = mainContainer.querySelectorAll(".lock-unlock");
+// const ticketColorEleList = mainContainer.querySelectorAll(".ticket-color");
+
+// for (let i = 0; i < ticketContainerList.length; i++) {
+//     deleteListner(ticketContainerList[i]);
+//     addToggleColor(ticketColorEleList[i]);
+//     addLockAndUnlock(ticketAreaList[i], lockBtnList[i]);
+// }
+
+// filterTickets();
+// deleteBtnEventListner();
+// modalCreation();
