@@ -12,12 +12,13 @@ let LOCAL_STORAGE_KEY = "KanabanBoardTickets";
 //========================= Local Storage ========================
 
 let ALL_TICKETS = localStorage.getItem(LOCAL_STORAGE_KEY) || [];
+let IS_FROM_LOCAL_STORAGE = false;
 
 // Initate the KanabanBoardApplication.
 (() => {
     if (typeof ALL_TICKETS === "string") {
         ALL_TICKETS = JSON.parse(ALL_TICKETS);
-        // populateUi();
+        populateUi();
     }
 
     enableKanabanBoardFunctionality();
@@ -30,15 +31,17 @@ function enableKanabanBoardFunctionality() {
 }
 
 function populateUi() {
+    IS_FROM_LOCAL_STORAGE = true;
     for (ticket of ALL_TICKETS) {
         buildTicketWithAllFeatures(ticket.content, ticket.color, ticket.isLocked, ticket.id);
     }
+    IS_FROM_LOCAL_STORAGE = false;
 }
 
 
 //========================= Lock and Unlock ========================
 
-function addLockAndUnlock(ticketArea, lockBtn) {
+function addLockAndUnlock(ticketArea, lockBtn, currentId) {
     lockBtn.addEventListener("click", (event) => {
         let lockBtnClassList = lockBtn.children[0].classList;
         let isLocked = lockBtnClassList.contains("fa-lock");
@@ -52,6 +55,12 @@ function addLockAndUnlock(ticketArea, lockBtn) {
             ticketArea.setAttribute("contenteditable", false);
         }
 
+        // Update new changes in local storage.
+        let ticketObj = getTicketObjectByCurrentId(currentId);
+        ticketObj.content = ticketArea.textContent;
+        ticketObj.isLocked = lockBtn.children[0].classList.contains("fa-lock");
+        updateLocalStorage();
+
         event.stopImmediatePropagation();
     });
 }
@@ -61,7 +70,7 @@ function addLockAndUnlock(ticketArea, lockBtn) {
 
 //========================= Change color ===========================
 
-function addToggleColor(ticketColorEle) {
+function addToggleColor(ticketColorEle, currentId) {
 
     ticketColorEle.addEventListener("click", (event) => {
         const currentColor = event.target.classList[1];
@@ -71,6 +80,11 @@ function addToggleColor(ticketColorEle) {
 
         event.target.classList.remove(currentColor);
         event.target.classList.add(COLORS[nextIdx]);
+
+        // Update new changes in local storage.
+        let ticketObj = getTicketObjectByCurrentId(currentId);
+        ticketObj.color = COLORS[nextIdx];
+        updateLocalStorage();
 
         event.stopImmediatePropagation();
     });
@@ -114,13 +128,19 @@ function filterTickets() {
 
 //========================= Delete feature ===========================
 
-function deleteListner(ticketContainer) {
+function deleteListner(ticketContainer, currentId) {
     ticketContainer.addEventListener("click", (event) => {
         if (removeBtn.style.color != "red") {
             return;
         }
 
         ticketContainer.remove();
+
+        // Update new changes in local storage.
+        let newAllTickets = ALL_TICKETS.filter(ticket => ticket.id != currentId);
+        ALL_TICKETS = newAllTickets
+        updateLocalStorage()
+
         event.stopImmediatePropagation();
     });
 }
@@ -224,16 +244,18 @@ function buildTicketWithAllFeatures(writtenContent, activeColor, isLocked, curre
     // Lock-Unlock;
     const ticketArea = ticketContainer.querySelector(".ticket-area");
     const lockBtn = ticketContainer.querySelector(".lock-unlock");
-    addLockAndUnlock(ticketArea, lockBtn);
+    addLockAndUnlock(ticketArea, lockBtn, currentId);
 
     // Toggle Color.
     const ticketColorEle = ticketContainer.querySelector(".ticket-color");
-    addToggleColor(ticketColorEle);
+    addToggleColor(ticketColorEle, currentId);
 
     // Delete Event Listner.
-    deleteListner(ticketContainer);
+    deleteListner(ticketContainer, currentId);
 
-    createTicketObjAndUpdateLocalStorgae(writtenContent, activeColor, isLocked, currentId);
+    if (!IS_FROM_LOCAL_STORAGE) {
+        createTicketObjAndUpdateLocalStorgae(writtenContent, activeColor, isLocked, currentId);
+    }
 }
 
 function getActiveColorFromModalColorArray(priorityColorArrayOfModal) {
@@ -262,6 +284,10 @@ function createTicketObjAndUpdateLocalStorgae(writtenContent, activeColor, isLoc
 
 function updateLocalStorage() {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(ALL_TICKETS))
+}
+
+function getTicketObjectByCurrentId(currentId) {
+    return ALL_TICKETS.find(ticket => ticket.id === currentId);
 }
 
 
