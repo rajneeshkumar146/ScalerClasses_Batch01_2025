@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- algorithm to efficiently manipulate your UI -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+
+    <!-- React DOM  -> uses react to update the DOM-->
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+    <!-- transpiler -> JSX -> into javascript -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+</head>
+
+<body>
+
+    <!-- Whole application lives here -->
+    <div id="root"></div>
+
+    <!-- Single page application -->
+    <script type="text/babel">
+        let stationary = ["Pen", "Pencil", "Eraser", "Ruler", "Divider"];
+        let listItem = [];
+        for (let i = 0; i < stationary.length; i++) {
+            const liItem = <li>{stationary[i]}</li>;
+            listItem.push(liItem);
+        }
+
+        function LIST() {
+            return <div>
+                <h2>List Items</h2>
+                <ul>{listItem}</ul>
+            </div>
+        }
+
+        function LIST_2() {
+            return <div>
+                <h2>List Items</h2>
+                <ul>{stationary.map((item) => <li>{item}</li>)}</ul>
+            </div>
+        }
+
+        function LIST_3(obj) {
+            let { stationary } = obj;
+            return <div>
+                <h2>List Items</h2>
+                <ul>{stationary.map((item) => <li>{item}</li>)}</ul>
+            </div>
+        }
+
+
+        ReactDOM.render(<LIST_3 stationary={stationary} />, document.getElementById('root'));
+
+
+    </script>
+
+
+</body>
+
+</html>

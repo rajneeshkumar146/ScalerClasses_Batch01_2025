@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- algorithm to efficiently manipulate your UI -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+
+    <!-- React DOM  -> uses react to update the DOM-->
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+    <!-- transpiler -> JSX -> into javascript -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <title>Document</title>
+</head>
+
+<body>
+
+    <!-- Whole application lives here -->
+    <div id="root"></div>
+
+    <!-- Single page application -->
+    <script type="text/babel">
+
+        function HELLO(prop) {
+            let { name, age } = prop;
+
+            return <h1> Hello My name: {name}, and my age: {age}</h1>;
+        }
+
+        function BYE() {
+            return <p>I'm a Bye component.</p>
+        }
+
+        // Signifinace -> You can break a problem into multiple smaller parts.
+        // Create -> Parent component using child component.
+        function HELLO_PARENT() {
+            return <div>
+                <HELLO name={"Debasish"} age={26} />
+                <HELLO name={"Ganesh"} age={25} />
+                <HELLO name={"Karan"} age={25} />
+                <HELLO name={"Rajneesh"} age={27} />
+
+                <BYE />
+            </div>
+        }
+
+        ReactDOM.render(<HELLO_PARENT />, document.getElementById('root'));
+
+    </script>
+
+</body>
+
+</html>
