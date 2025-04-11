@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- algorithm to efficiently manipulate your UI -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+
+    <!-- React DOM  -> uses react to update the DOM-->
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+    <!-- transpiler -> JSX -> into javascript -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <style>
+        .counter {
+            margin-top: 2rem;
+            border-bottom: 2px solid gray;
+            padding-bottom: 1rem;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        function COUNTER(props) {
+            let { intialValue, counterNumber } = props;
+            const [count, setCount] = React.useState(intialValue);
+
+            const increment = () =>
+                setCount(count + 1);
+
+            const decrement = () =>
+                setCount(count - 1);
+
+            return <div class="counter">
+                <h2>Counter Number: {counterNumber}</h2>
+                <button onClick={increment}>+</button>
+                <p>{count}</p>
+                <button onClick={decrement}>-</button>
+            </div>
+        }
+
+        function MULTI_COUNTER() {
+            return <div>
+                <COUNTER intialValue={3} counterNumber={1}></COUNTER>
+                <COUNTER intialValue={5} counterNumber={2}></COUNTER>
+                <COUNTER intialValue={7} counterNumber={3}></COUNTER>
+            </div>
+
+        }
+
+        function MULTI_COUNTER_2(props) {
+            let { intialValueList } = props;
+
+            return <div>
+                {
+                    intialValueList.map((intialVal, index) =>
+                        <COUNTER intialValue={intialVal} counterNumber={index} />
+                    )
+                }
+            </div>
+
+        }
+
+
+        // ReactDOM.render(<MULTI_COUNTER />, document.getElementById('root'));
+        ReactDOM.render(<MULTI_COUNTER_2 intialValueList={[3, 5, 7]} />, document.getElementById('root'));
+
+    </script>
+
+</body>
+
+</html>

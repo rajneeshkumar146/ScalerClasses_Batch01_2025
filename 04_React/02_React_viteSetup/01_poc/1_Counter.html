@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- algorithm to efficiently manipulate your UI -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+
+    <!-- React DOM  -> uses react to update the DOM-->
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+    <!-- transpiler -> JSX -> into javascript -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        function COUNTER() {
+            // let count = 0;  // This will not work, Please watch class video for explanation here.
+
+            // 0: is your intial state.
+            // arr[0]: State variable.
+            // arr[1]: setter method of state. (Method to update state variable, by using particular method wll chnage our state);
+            let intialState = 10;
+            const [count, setCount] = React.useState(intialState);
+
+            console.log("Rajneesh 1: ", count);
+            const increment = () => {
+                setCount(count + 1);
+            }
+
+            const decrement = () => {
+                setCount(count - 1);
+            }
+
+            console.log("Rajneesh 2: ", count);
+            return <div>
+                <button onClick={increment}>+</button>
+                <p>{count}</p>
+                <button onClick={decrement}>-</button>
+            </div>
+
+        }
+
+
+        ReactDOM.render(<COUNTER />, document.getElementById('root'));
+
+    </script>
+
+
+</body>
+
+</html>
