@@ -1,6 +1,7 @@
 import React from 'react'
 import { useEffect } from 'react';
 import { useState } from 'react'
+import basicOps from './utility/basicOps';
 
 function Home() {
 
@@ -16,7 +17,7 @@ function Home() {
     })();
   }, []);
 
-  const modifiedArrayOfProducts = products;
+  const modifiedArrayOfProducts = basicOps(products, searchTerm);
 
   return (
     <>
