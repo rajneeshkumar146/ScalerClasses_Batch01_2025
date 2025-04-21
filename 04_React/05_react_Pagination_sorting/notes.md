@@ -9,4 +9,3 @@
   npm run dev
 
 6. npm i react-router-dom
-7. npm install @mui/icons-material @mui/material @emotion/styled @emotion/react
