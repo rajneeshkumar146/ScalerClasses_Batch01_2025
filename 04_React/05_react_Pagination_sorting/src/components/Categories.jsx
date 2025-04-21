@@ -5,10 +5,19 @@ function Categories(props) {
 
     return (
         <>
-           {/* button of All Categories */}
+            <button
+                className='category_option'
+                onClick={() => { setCurrCategories("All Categories") }}
+            >All Categories</button>
 
-           {/* rest of Category button */}
-        
+            {
+                categories.map((category) => {
+                    return <button
+                        className='category_option'
+                        onClick={() => { setCurrCategories(category) }}
+                    >{category}</button>
+                })
+            }
         </>
     )
 }
