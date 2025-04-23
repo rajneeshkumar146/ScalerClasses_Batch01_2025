@@ -1,10 +1,15 @@
 import React from 'react'
+import { useState } from 'react';
 import { useContext } from 'react';
 
 const PaginationContext = React.createContext();
 
 export default function PaginationProvider({ children }) {
-    const pageProps = {};
+    const [pageSize, setPageSize] = useState(4);
+    const [pageNum, setPageNum] = useState(1);
+
+    const pageProps = { pageNum, pageSize, setPageNum, setPageSize };
+
     return (
         <PaginationContext.Provider value={pageProps}>{children}</PaginationContext.Provider>
     )

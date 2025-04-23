@@ -10,10 +10,10 @@ import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import { usePaginationContext } from './contexts/PaginationContext';
 
 const ASCENDING_ORDER_SORTING = 1;
 const DESCENDING_ORDER_SORTING = -1;
-const PAGE_SIZE = 4;
 
 function Home() {
 
@@ -23,7 +23,8 @@ function Home() {
 
   const [currCategories, setCurrCategories] = useState("All Categories");
   const [sortDirection, setSortDirection] = useState(0);  // 0: normal order, 1: ascending order, -1: descending order.
-  const [pageNum, setPageNum] = useState(1);
+
+  const { pageNum, pageSize, setPageNum, setPageSize } = usePaginationContext();
 
   /********************Getting all the Products *****************/
   useEffect(() => {
@@ -45,7 +46,7 @@ function Home() {
     })();
   }, []);
 
-  const object = basicOps(products, searchTerm, sortDirection, currCategories, pageNum);
+  const object = basicOps(products, searchTerm, sortDirection, currCategories, pageNum, pageSize);
   let modifiedArrayOfProducts = object.modifiedArray != null ? object.modifiedArray : [];
   let totalPages = object.totalPages != null ? object.totalPages : 1;
 
