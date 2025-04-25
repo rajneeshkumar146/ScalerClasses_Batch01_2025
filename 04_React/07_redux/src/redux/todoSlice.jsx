@@ -8,10 +8,12 @@ const todoSlice = createSlice({
     },
     reducers: {
         setValue: (state, componentInfoObj) => {
-            console.log("1: ",componentInfoObj);
+            state.value = componentInfoObj.payload;
         },
-        setTask: (state, componentInfoObj) => {
-            console.log("2: ",componentInfoObj);
+        addTask: (state, componentInfoObj) => {
+            const newTask = componentInfoObj.payload;
+            state.todoList.push(newTask);
+            state.value = "";
         }
     }
 });
