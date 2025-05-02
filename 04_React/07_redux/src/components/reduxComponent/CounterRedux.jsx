@@ -4,8 +4,8 @@ import counterSlice from '../../redux/counterSlice';
 
 function CounterRedux() {
     // getter
-    const count = useSelector((store) => 
-                  store.counterState.count);
+    const count = useSelector((store) =>
+        store.counterState.count);
 
     // setter
     const actions = counterSlice.actions;
