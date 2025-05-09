@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useMemo } from 'react';
 import { useEffect } from 'react';
 
 
@@ -19,8 +20,14 @@ function LargeSumArray() {
     const [count, setCount] = useState(0);
 
 
-    const largeArray = generateLargeArray();
-    const sum = sumArray(largeArray);
+    // const largeArray = generateLargeArray();
+    // const sum = sumArray(largeArray);
+
+    // By using useMemo, the costly sumArray function is not re-executed on every render 
+    // unless the dependency (largeArray) changes. This prevents unnecessary recalculations 
+    // and significantly improves performance.
+    const largeArray = useMemo(() => generateLargeArray(), []);
+    const sum = useMemo(() => sumArray(largeArray), [largeArray]);
 
     return (
         <div>
