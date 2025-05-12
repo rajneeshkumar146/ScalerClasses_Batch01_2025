@@ -21,6 +21,3 @@ Setup:
 8. npm install redux-thunk
 9. npm i axios
 10. npm i tailwind
-
-
-
