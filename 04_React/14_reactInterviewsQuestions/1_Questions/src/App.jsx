@@ -5,6 +5,7 @@ import './App.css'
 
 import UseRef from "./Compontents/UseRef"
 import StopWatch from './Compontents/StopWatch'
+import Carousel from './Compontents/Carousel'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -12,7 +13,8 @@ function App() {
   return (
     <>
       {/* <UseRef/> */}
-      <StopWatch/>
+      {/* <StopWatch/> */}
+      <Carousel/>
     </>
   )
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const items = [
     {
@@ -25,9 +25,55 @@ const items = [
 ];
 
 function Carousel() {
+    const [currentItemIndex, setcurrentItemIndex] = useState(0);
+    useEffect(() => {
+        const timer = setInterval(() => {
+            nextItem();
+        }, 2000);
+        
+        // UseEffect cleanup.
+        return () => {
+            clearInterval(timer);
+        };
+    });
+
+
+    function nextItem() {
+        setcurrentItemIndex((currentItemIndex + 1) % items.length);
+
+        // if (currentItemIndex == items.length - 1) {
+        //     setcurrentItemIndex(0);
+        // } else {
+        //     setcurrentItemIndex(currentItemIndex + 1);
+        // }
+    }
+    function prevItem() {
+        setcurrentItemIndex((currentItemIndex - 1 + items.length) % items.length);
+
+        // if (currentItemIndex == 0) {
+        //     setcurrentItemIndex(items.length - 1);
+        // } else {
+        //     setcurrentItemIndex(currentItemIndex - 1);
+        // }
+    }
+
+
     return (
-        <div>Carousel</div>
-    )
+        <div className="carousel">
+            <button onClick={prevItem}>Prev</button>
+            <div className="carousel-item">
+                <img
+                    height="300"
+                    width="400"
+                    src={items[currentItemIndex].imageUrl}
+                    alt={items[currentItemIndex].title}
+                />
+                <h2>{items[currentItemIndex].title}</h2>
+                <p>{items[currentItemIndex].description}</p>
+            </div>
+            <button onClick={nextItem}>Next</button>
+        </div>
+    );
 }
 
 export default Carousel
