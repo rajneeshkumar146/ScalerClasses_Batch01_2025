@@ -1,27 +1,24 @@
-import React from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import PaginationSlice from "../Redux/PaginationSlice"
+import paginationSlice from "../redux/paginationSlice";
 
-const actions = PaginationSlice.actions;
+const actions = paginationSlice.actions;
 
 export default function Pagination() {
-  const { pageNo } = useSelector((store => store.paginationState));
+  const { pageNo } = useSelector((store)=>store.paginationState);
   const dispatch = useDispatch();
-
-
   return (
     <div className="flex justify-center	gap-8 text-3xl h-[4rem] w-screen bg-slate-400 items-center">
-
-      <div onClick={() => dispatch(actions.handlePrev())} className="cursor-pointer">
+      
+      <div onClick={()=>dispatch(actions.handlePrev())} className="cursor-pointer">
         <i className="fa-solid fa-arrow-left"></i>
       </div>
 
       <div>{pageNo}</div>
-
-      <div onClick={() => dispatch(actions.handleNext())} className="cursor-pointer">
+      
+      <div onClick={()=>dispatch(actions.handleNext())} className="cursor-pointer">
         <i className="fa-solid fa-arrow-right"></i>
       </div>
-
+    
     </div>
-  )
+  );
 }

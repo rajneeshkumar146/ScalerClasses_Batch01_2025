@@ -85,7 +85,7 @@ export default function WatchList() {
               ></i>
             </th>
             <th>Genre</th>
-            <th>Action</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>

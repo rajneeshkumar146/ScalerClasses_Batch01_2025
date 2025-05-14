@@ -7,7 +7,7 @@ const movieSlice = createSlice({
         loading: true,
         error: false,
     },
-    reducers:{
+    reducers: {
         setError: (state) => {
             state.error = true;
             state.loading = false;
@@ -17,12 +17,11 @@ const movieSlice = createSlice({
             state.error = false;
             state.loading = true;
             state.movies = [];
-            
         },
-        setMovies: (state, payloadObject) => {
-            state.error = false;
+        setMovies: (state, descObj) => {
+            state.movies = descObj.payload;
             state.loading = false;
-            state.movies = payloadObject.payload;
+            state.error = false;
         }
     }
 });

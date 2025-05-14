@@ -1,28 +1,26 @@
-import React from 'react'
-import { useEffect, useContext} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import axios from "axios";
+import { useContext, useEffect, useState } from "react";
 import { BASE_URL } from "../Utils/constants";
-import MovieContext from '../Context/MovieContext';
-import MovieMiddeware from "../Redux/Movie/MovieMiddleWare";
-import Pagination from './Pagination';
-import Moviecard from './Moviecard';
+import MovieCard from "./MovieCard";
+import Pagination from "./Pagination";
+import MovieContext from "../Context/MovieContext";
+import { useDispatch, useSelector } from "react-redux";
+import MovieMiddleware from "../redux/Movie/MovieMiddleWare";
 
 export default function Movies() {
   const { watchList } = useContext(MovieContext);
   const { pageNo } = useSelector((store) => store.paginationState);
-  const { movies, loading, error } = useSelector((store) => store.movieState);
-
+  const { movies, loading, error } = useSelector((store) => store.moviesState);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(MovieMiddeware(pageNo));
-  }, [pageNo]);   // It  means execute callback on mouting as well as on pageNo update.
-
+    dispatch(MovieMiddleware(pageNo));
+  }, [pageNo]); //it means execute callback on mounting as well as on pageNo updates
 
   if (loading) {
     return <h1>...Loading</h1>;
   }
-
+  
   if (error) {
     return <h1>OPS... Error Occured</h1>;
   }
@@ -34,7 +32,7 @@ export default function Movies() {
       <div className="flex flex-wrap justify-evenly	">
         {movies.map((movie) => {
           return (
-            <Moviecard
+            <MovieCard
               key={movie.id}
               movie={movie}
               fav={watchList.some((movieObj) => movieObj.id === movie.id)}

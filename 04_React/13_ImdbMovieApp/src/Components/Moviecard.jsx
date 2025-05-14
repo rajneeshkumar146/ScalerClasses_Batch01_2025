@@ -1,12 +1,11 @@
-import React from 'react'
-import { useContext } from 'react';
-import MovieContext from '../Context/MovieContext';
+import { useContext } from "react";
+import MovieContext from "../Context/MovieContext";
 
-export default function Moviecard({
+export default function MovieCard({
   movie,
   fav,
   title,
-  poster
+  poster,
 }) {
 
   const { addToWatchList, removeFromWatchList } = useContext(MovieContext);
