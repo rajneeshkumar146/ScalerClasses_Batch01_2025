@@ -1,5 +1,5 @@
 // fs module is used tp readwrite in files.
-const fs = require("fs"); // Library which we need to import.  `import * as fs from 'node:fs'; 
+// const fs = require("fs"); // Library which we need to import.  `import * as fs from 'node:fs'; 
 
 
 // // readFile will perform its operation in async way. 
@@ -105,3 +105,25 @@ const path = require("path");
 const fs = require("fs");
 const sourceFilePath = "./dir/file1.txt";
 const destinationFilePath = "./file2.txt";
+
+// Create a redable stream.
+const readStream = fs.createReadStream(sourceFilePath);
+
+// writable stream.
+const writeStream = fs.createWriteStream(destinationFilePath);
+
+// pipe the stream of data flow.
+readStream.pipe(writeStream);
+
+readStream.on("error", (err)=> {
+    console.log("Error while reading the file: ", err.message);
+});
+
+readStream.on("end", () => {
+    console.log("File reading and writting is completed!!");
+})
+
+writeStream.on("error", (err)=> {
+    console.log("Error while writting the file: ", err.message);
+});
+
