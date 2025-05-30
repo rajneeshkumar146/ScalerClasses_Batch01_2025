@@ -1,6 +1,12 @@
 const mongoose = require("mongoose");
 
-
+/**
+ "name":"siri",
+ "email":"siri@apple.com",
+ "password":"steve",
+ "role": "user"
+ "isAdmin":false
+ */
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
