@@ -13,6 +13,9 @@ function Login() {
       const response = await LoginUser(values);
       if (response.success) {
         message.success(response.message);
+        const jwtToken = response.data;
+        //  TODO(rajneesh): Remove this console once project is ready for launch.
+        console.log("Token at client side in login page: ", jwtToken);
         navigate("/");
       } else {
         message.error(response.message);
