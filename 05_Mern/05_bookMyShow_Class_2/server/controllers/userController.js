@@ -12,14 +12,14 @@ const jwt = require("jsonwebtoken");
 
 const getCurrentUser = async (req, res) => {
     try {
-        const id = req.params.id;
+        const id =  req.body.userId;
         const user = await userModel.findById(id).select("-password");
         console.log("User Found with id: ", id, " User is: ", user);
 
         return res.status(200).send({
             success: true,
             data: user,
-            message: "Your are authrized person!",
+            message: "Your are authrized person to go on protected route!",
         });
     } catch (err) {
         return res.status(500).json({ message: "Error fetching user:", err });

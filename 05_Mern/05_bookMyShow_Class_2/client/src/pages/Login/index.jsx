@@ -3,6 +3,8 @@ import { Button, Form, Input, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { LoginUser } from "../../api/users";
 
+const STORAGE_KEY = "token";
+
 function Login() {
   const navigate = useNavigate();
 
@@ -16,6 +18,7 @@ function Login() {
         const jwtToken = response.data;
         //  TODO(rajneesh): Remove this console once project is ready for launch.
         console.log("Token at client side in login page: ", jwtToken);
+        localStorage.setItem(STORAGE_KEY, jwtToken);
         navigate("/");
       } else {
         message.error(response.message);

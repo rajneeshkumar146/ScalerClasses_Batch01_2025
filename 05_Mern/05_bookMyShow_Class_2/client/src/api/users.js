@@ -23,10 +23,11 @@ export const RegisterUser = async (value) => {
 }
 
 
-export const GetCurrentUser = async (value) => {
+export const GetCurrentUser = async () => {
     try {
-        // TODO(replace this id with correct id)
-        const response = await axiosInstance.get("api/users/get-current-user/:id");
+        //  TODO(rajneesh): Remove this console once project is ready for launch.
+        console.log("In GetCurrentUser");
+        const response = await axiosInstance.get("api/users/get-current-user");
         return response.data;
     } catch (err) {
         console.log("Error occuered at client side in login endpoint:", err);
