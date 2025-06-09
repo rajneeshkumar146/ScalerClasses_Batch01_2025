@@ -19,7 +19,7 @@ function MovieForm({
     const dispatch = useDispatch();
 
     if (selectedMovie) {
-        selectedMovie.releaseDate = moment(selectedMovie.releaseDate).formate(
+        selectedMovie.releaseDate = moment(selectedMovie.releaseDate).format(
             "YYYY-MM-DD"
         );
     }
@@ -30,9 +30,13 @@ function MovieForm({
             let response = null;
 
             if (formType === "add") {
+                //  TODO(rajneesh): Remove this console once project is ready for launch.
+                console.log("Add Movie data that I recieve: ", values)
                 const newLocal = response = await addMovie(values);
             } else {
-                response = await updateMovie({ ...values, movieId: selectedMovie._id });
+                //  TODO(rajneesh): Remove this console once project is ready for launch.
+                console.log("Updated Movie data that I recieve: ", values)
+                response = await updateMovie({ ...values, _id: selectedMovie._id});
             }
 
             if (response.success) {

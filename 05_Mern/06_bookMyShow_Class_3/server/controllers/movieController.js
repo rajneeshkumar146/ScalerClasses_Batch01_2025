@@ -59,7 +59,7 @@ const addMovie = async (req, res) => {
 // Path: http://8082:localhost/api/movies/delete-movie
 const deleteMovie = async (req, res) => {
     try {
-        console.log("req.body", req.body.movieId);
+        console.log("req.body", req.body._id);
         await Movie.findByIdAndDelete(req.body.movieId);
         res.send({
             success: true,
@@ -74,11 +74,11 @@ const deleteMovie = async (req, res) => {
 }
 
 // PUT
-// Path: http://8082:localhost/api/movies/update-movie
+// Path: http://localhost:8082/api/movies/update-movie
 const updateMovie = async (req, res) => {
     try {
         const updatedMovie = await Movie.findByIdAndUpdate(
-            req.body.movieId,
+            req.body._id,
             req.body
         );
         res.send({

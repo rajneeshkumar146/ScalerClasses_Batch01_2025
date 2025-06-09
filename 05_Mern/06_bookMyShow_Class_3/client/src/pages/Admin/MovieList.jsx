@@ -124,11 +124,6 @@ function MovieList() {
         getData();
     }, []);
 
-
-
-
-
-
     return (
         <>
             <div className="d-flex justify-content-end">
@@ -140,7 +135,7 @@ function MovieList() {
                 >
                     Add Movie
                 </Button>
-                
+
                 <Table dataSource={movies} columns={tableHeading} />
                 {isModalOpen && (
                     <MovieForm
