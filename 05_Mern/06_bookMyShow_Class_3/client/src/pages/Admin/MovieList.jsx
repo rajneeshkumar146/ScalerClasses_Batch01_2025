@@ -94,6 +94,14 @@ function MovieList() {
                         >
                             <EditOutlined />
                         </Button>
+                        <Button
+                            onClick={() => {
+                                setIsDeleteModalOpen(true);
+                                setSelectedMovie(data);
+                            }}
+                        >
+                            <DeleteOutlined />
+                        </Button>
                     </div>
                 );
             },
@@ -142,6 +150,15 @@ function MovieList() {
                         isModalOpen={isModalOpen}
                         setIsModalOpen={setIsModalOpen}
                         formType={formType}
+                        getData={getData}
+                        selectedMovie={selectedMovie}
+                        setSelectedMovie={setSelectedMovie}
+                    />
+                )}
+                {isDeleteModalOpen && (
+                    <DeleteMovieModal
+                        isDeleteModalOpen={isDeleteModalOpen}
+                        setIsDeleteModalOpen={setIsDeleteModalOpen}
                         getData={getData}
                         selectedMovie={selectedMovie}
                         setSelectedMovie={setSelectedMovie}
