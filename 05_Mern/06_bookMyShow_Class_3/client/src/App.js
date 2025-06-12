@@ -8,6 +8,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ProtectedRoute from './components/ProtectedRoute';
 import Admin from './pages/Admin';
+import Profile from "./pages/Profile";
+import Partner from "./pages/Partner";
 
 function App() {
   return (
@@ -20,6 +22,11 @@ function App() {
 
             <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>}></Route>
             <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>}></Route>
+
+            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+
+            <Route path="/partner" element={<ProtectedRoute><Partner /></ProtectedRoute>} />
+
 
           </Routes>
         </BrowserRouter>

@@ -72,12 +72,39 @@ const getShowsByTheathres = async (req, res) => {
 }
 
 const getAllTheathresByMovie = async (req, res) => {
-
-
-
+    /** 
+     * This route handles a POST request to /get-all-theatres-by-movie.
+     It expects the request body (req.body) to contain movie and date.
+     It retrieves all shows of the specified movie and date from the database (await
+     Show.find({ movie, date }).populate('theatre')).
+     
+    It then filters out unique theatres and organizes shows under each unique theatre.
+    It sends a success response with the fetched theatres and associated shows.
+    If there's an error (e.g., database error), it sends a failure response with an error message.
+     
+    uniqueTheatres -> [{theatre1, shows: [show1, show2]}, {theatre2, shows: [show1, show2]}]
+     **/
     try {
 
+        const { movie, date } = req.body;
+        const shows = await Show.find({ movie, date }).populate("theatre");
 
+        //Filter out the unique theatre.
+        const uniqueTheatres = [];
+        shows.forEach((show) => {
+            const isTheatreAlreadyPresentInMap = uniqueTheatres.find((theatre) => theatre._id === show.theatre._id);
+
+            if (!isTheatreAlreadyPresentInMap) {
+                const showOfThisTheatre = shows.filter((showObj) => showObj.theatre._id === show.theatre._id);
+                uniqueTheatres.push({ ...show.theatre._doc, shows: showOfThisTheatre });
+            }
+        });
+
+        res.send({
+            success: true,
+            data: uniqueTheatres,
+            message: "All theatres by movie",
+        });
     } catch (err) {
         console.log(err);
         res.send({
