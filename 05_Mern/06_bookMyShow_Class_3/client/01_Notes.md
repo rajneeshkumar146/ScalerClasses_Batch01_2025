@@ -7,6 +7,7 @@
 6. npm install react-redux
 7. npm i @ant-design/icons
 8. npm install moment
+9. npm i react-stripe-checkout
 
 
 ## If you face issue of incorrect host api calls;
