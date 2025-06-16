@@ -8,6 +8,7 @@ const Show = require("../model/showModel");
 router.post("/make-payment", auth, async (req, res) => {
     try {
         const { token, amount } = req.body;
+        console.log("Token: ", token, "amount: ", amount, req.body);
         const customer = await stripe.customer.create({
             email: token.email,
             source: token.id,

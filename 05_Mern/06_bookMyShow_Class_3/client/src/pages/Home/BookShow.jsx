@@ -41,14 +41,14 @@ function BookShow() {
   };
 
   const getSeats = () => {
-    let columns = 12; // Number of columns for seating arrangment.
-    let totalSeats = show.totalSeats; // Total Number of seats.
-    let rows = Math.ceil(totalSeats / column);  // Calculating the number of rows.
-
+    let columns = 12; // Number of columns for searting arrangement.
+    let totalSeats = show.totalSeats; // Total number of seats.
+    let rows = Math.ceil(totalSeats / columns); // calculating number of rows.
 
     return (
       <div className="d-flex flex-column align-items-center">
         <div className="w-100 max-width-600 mx-auto mb-25px">
+
           <p className="text-center mb-10px">
             Screen this side, you will be watching in this direction
           </p>
@@ -56,16 +56,62 @@ function BookShow() {
           <div className="screen-div">
             {/* Placeholder for screen display */}
           </div>
-
         </div>
 
-        <ul>
+        <ul
+          className="seat-ul justify-content-center"
+          style={{ marginLeft: "25%" }}
+        >
 
+          {Array.from(Array(rows).keys()).map((row) =>
+            // Mapping rows
+            Array.from(Array(columns).keys()).map((column) => {
+              let seatNumber = row * columns + column + 1; // Calculating seat number, In term of numeric.
+              // let asciiOfCaptitalA = 'A'.charCodeAt();
+              // let RowCharacter = String.fromCharCode(asciiOfCaptitalA + row);
+              // let seatNumberInChar = RowCharacter + "" + (column + 1);
+              // console.log(seatNumber);
+              let seatClass = "seat-btn"; // Default class for seat button
+
+              if (selectedSeats.includes(seatNumber)) {
+                seatClass += " selected"; // Adding 'selected' class if seat is selected
+              }
+
+              if (show.bookedSeats.includes(seatNumber)) {
+                seatClass += " booked"; // Adding 'booked' class if seat is already booked
+              }
+
+              if (seatNumber <= totalSeats) {
+                // Rendering seat button if seat number is valid
+                return (
+                  <li key={seatNumber}>
+                    {/* Key added for React list rendering optimization */}
+                    <button
+                      className={seatClass}
+                      onClick={() => {
+                        // Function to handle seat selection/deselection
+                        if (selectedSeats.includes(seatNumber)) {
+                          setSelectedSeats(
+                            selectedSeats.filter(
+                              (curSeatNumber) => curSeatNumber !== seatNumber
+                            )
+                          );
+                        } else {
+                          setSelectedSeats([...selectedSeats, seatNumber]);
+                        }
+                      }}
+                    >
+                      {seatNumber}
+                    </button>
+                  </li>
+                );
+              }
+            })
+          )}
 
         </ul>
-
         <div className="d-flex bottom-card justify-content-between w-100 max-width-600
-        mx-auto mb-25px mt-3">
+    mx-auto mb-25px mt-3">
 
           <div className="flex-1">
             Selected Seats: <span>{selectedSeats.join(", ")}</span>
@@ -75,11 +121,53 @@ function BookShow() {
             Total Price:{" "}
             <span>Rs. {selectedSeats.length * show.ticketPrice}</span>
           </div>
+
         </div>
       </div>
-    )
-
+    );
   }
+
+  const onToken = async (token) => {
+    console.log("token from stripe", token);
+    dispatch(ShowLoading());
+    const response = await makePayment(
+      token,
+      selectedSeats.length * show.ticketPrice
+    );
+    if (response.success) {
+      message.success(response.message);
+      console.log("Payment response: ", response.data)
+      book(response.data);
+      console.log(response);
+    } else {
+      message.error(response.message);
+    }
+    dispatch(HideLoading());
+  };
+
+
+  const book = async (transactionId) => {
+    try {
+      dispatch(ShowLoading());
+      const response = await bookShow({
+        show: params.id,
+        transactionId,
+        seats: selectedSeats,
+        user: user._id,
+      });
+      console.log("BookShow response: ", response.data)
+      if (response.success) {
+        message.success(response.message);
+        navigate("/profile");
+      } else {
+        message.error(response.message);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+
 
   // Effect hook to fetch data on component mount
   useEffect(() => {
@@ -126,14 +214,27 @@ function BookShow() {
               style={{ width: "100%" }}
             >
               {getSeats()} {/* Rendering dynamic seat layout */}
+
+              {selectedSeats.length > 0 && (
+                <StripeCheckout
+                  token={onToken}
+                  amount={selectedSeats.length * show.ticketPrice * 100}
+                  stripeKey="pk_test_51PWxveRqBCzyvFZoHMLuIwOIFjkSaLV4u0NaGMfAOTV1cc1efIrJ1HKQbCqyZxw36BkEC2OlhstFYLaPhFpIbAet00qSxt2kDP"
+                >
+                  {/* Use this one in some situation=> pk_test_eTH82XLklCU1LJBkr2cSDiGL001Bew71X8  */}
+                  <div className="max-width-600 mx-auto">
+                    <Button type="primary" shape="round" size="large" block>
+                      Pay Now
+                    </Button>
+                  </div>
+                </StripeCheckout>
+              )}
             </Card>
           </Col>
         </Row>
       )}
     </>
   );
-
-
 }
 
 export default BookShow

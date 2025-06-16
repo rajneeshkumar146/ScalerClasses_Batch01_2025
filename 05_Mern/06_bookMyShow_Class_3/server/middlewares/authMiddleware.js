@@ -12,7 +12,8 @@ const auth = (req, res, next) => {
         const verifiedToken = jwt.verify(token, process.env.JWT_SECRET);
         console.log("Verified Token: ", verifiedToken);
 
-        req.body = { "userId": verifiedToken.userId };
+        // req.body = { "userId": verifiedToken.userId };
+        req.body.userId = verifiedToken.userId;
         console.log("After verification userId is: ", req.body.userId);
 
         next();
