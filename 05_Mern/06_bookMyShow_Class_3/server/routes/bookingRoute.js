@@ -8,13 +8,12 @@ const Show = require("../model/showModel");
 router.post("/make-payment", auth, async (req, res) => {
     try {
         const { token, amount } = req.body;
-        console.log("Token: ", token, "amount: ", amount, req.body);
-        const customer = await stripe.customer.create({
+        const customer = await stripe.customers.create({
             email: token.email,
             source: token.id,
         });
 
-        const paymentIntent = await stripe.paymentIntent.create({
+        const paymentIntent = await stripe.paymentIntents.create({
             amount: amount,
             currency: "usd",
             customer: customer.id,
