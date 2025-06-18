@@ -1,4 +1,5 @@
 const express = require("express");
+const EmailHelper = require("../utils/emailHelper");
 
 const auth = require('../middlewares/authMiddleware')
 const {
@@ -7,7 +8,9 @@ const {
     getCurrentUser
 } = require('../controllers/userController');
 
+
 const userRouter = express.Router();
+const User = require("../model/userModel");
 
 const putReqBody = (req, res, next) => {
     req.body = {};
@@ -43,10 +46,56 @@ const otpGenerator = function () {
     return Math.floor(shiftingBy + Math.random() * multiplier);
 }
 
+const resetOtpFileds = (user) => {
+    user.otp = undefined;
+    user.otpExpiry = undefined;
+}
+
 
 userRouter.patch("/forgetpassword", async function (req, res) {
+    /**
+     * 1. You can ask for email.
+     * 2. Check email is present or not.
+     * 3. If email is not present -> send a response to the user (user not found).
+     * 4. If email is present -> create otp -> send to the email.
+     * 5. Also store the otp -> in the user model.
+     */
     try {
+        if (req.body.email === undefined) {
+            return res.status(401).json({
+                status: "failure",
+                message: "Please entre the email for forget password."
+            });
+        }
 
+        // find the user in db.
+        let user = await User.findOne({ email: req.body.email });
+        if (user === null) {
+            return res.status(404).json({
+                status: "failure",
+                message: "User not found"
+            });
+        }
+
+        // If we got the user.
+        const otp = otpGenerator();
+        user.otp = otp;
+        user.otpExpiry = Date.now() + 10 * 60 * 1000;
+
+        console.log("Otp sent to your email id: ", otp);
+
+        // Those update will be send to the db.
+        await user.save();
+
+        res.status(200).json({
+            status: "success",
+            message: "Otp sent to your email id."
+        });
+
+        EmailHelper('otp.html', user.email, {
+            name: user.name,
+            otp: otp,
+        });
     } catch (err) {
         return res.status(500).json({ status: "failure", message: err.message });
     }
@@ -54,8 +103,56 @@ userRouter.patch("/forgetpassword", async function (req, res) {
 });
 
 userRouter.patch("/resetpassword/:email", async function (req, res) {
+    /**
+   * 1. otp is there, new password should be populated and We match the otp.
+   * 2. email id should match.
+   * 3. otp is not expired
+   */
     try {
+        let resetDetails = req.body;
+        // Required fields should be there.
+        if (!resetDetails.password || !resetDetails.otp) {
+            return res.status(401).json({
+                status: "failure",
+                message: "Invalid request!"
+            });
+        }
 
+        // Is person exist.
+        let user = await User.findOne({ email: req.params.email });
+        if (user === null) {
+            return res.status(404).json({
+                status: "failure",
+                message: "User not found"
+            });
+        }
+
+        if (user.otp != req.body.otp) {
+            return res.status(404).json({
+                status: "failure",
+                message: "otp doesn't matched!"
+            });
+        }
+
+        // is otp expired.
+        if (Date.now() > user.otpExpiry) {
+            resetOtpFileds(user);
+            return res.status(401).json({
+                status: "failure",
+                message: "otp expired."
+            });
+        }
+
+        user.password = req.body.password;
+
+        // Reset the otp from the user.
+        resetOtpFileds(user);
+
+        await user.save();
+        return res.status(200).json({
+            status: "success",
+            message: "Password reset successfully"
+        });
     } catch (err) {
         return res.status(500).json({ status: "failure", message: err.message });
     }
