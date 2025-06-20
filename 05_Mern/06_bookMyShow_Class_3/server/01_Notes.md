@@ -5,3 +5,7 @@
 4. npm install --save dotenv 
 5. npm i stripe
 6. npm install nodemailer
+7. npm install bcrypt
+8. npm install express-rate-limit
+9. npm install express-mongo-sanitize
+10. npm i helmet

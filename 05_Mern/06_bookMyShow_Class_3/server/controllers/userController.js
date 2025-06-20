@@ -1,5 +1,6 @@
 const userModel = require("../model/userModel");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 
 /**
@@ -12,7 +13,7 @@ const jwt = require("jsonwebtoken");
 
 const getCurrentUser = async (req, res) => {
     try {
-        const id =  req.body.userId;
+        const id = req.body.userId;
         const user = await userModel.findById(id).select("-password");
         console.log("User Found with id: ", id, " User is: ", user);
 
@@ -25,6 +26,20 @@ const getCurrentUser = async (req, res) => {
         return res.status(500).json({ message: "Error fetching user:", err });
     }
 
+}
+
+async function hashPassword(password) {
+    console.time("Time taken");
+
+    const salt = await bcrypt.genSalt(12);
+    console.log("Salt: ", salt);
+
+    const hashedPassword = await bcrypt.hash(password, salt);
+    console.log("Hashed Password: ", hashPassword);
+
+    console.timeEnd("Time taken");
+
+    console.log("****************************************");
 }
 
 const login = async (req, res) => {
@@ -40,7 +55,11 @@ const login = async (req, res) => {
             });
         }
 
-        // Similified password validation.
+
+        // console.log("req.body.password: ", req.body.password);
+        // console.log("user.password: ", user.password);
+        // const isMatch = await bcrypt.compare(req.body.password, user.password);
+        // if (!isMatch) {
         if (req.body.password !== user.password) {
             return res.status(401).send({
                 success: false,
@@ -52,8 +71,9 @@ const login = async (req, res) => {
             expiresIn: "10d"
         });
 
-        // TODO(rajneesh): Remove this once done with development.
-        console.log("\nPrinting token for debugging purpose, in user Controller:", token, "\n");
+        // const password = "Manisha@123";
+        // hashPassword(password);
+
         console.log("Able to validate user, Login successfully.");
 
         return res.status(200).send({
@@ -83,7 +103,15 @@ const register = async (req, res) => {
             });
         }
 
-        const newUser = await userModel.create(req.body);
+        // Hash the password.
+        // const saltRounds = 10; // The higher the number, the more secure but slower the hasing proccess.
+        // const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+        const newUser = new userModel({
+            ...req.body,
+            // password: hashedPassword
+        });
+
+        await newUser.save();
 
         // TODO(rajneesh): Remove this once done with development.
         console.log("During registration successfully registered: ", req.body);
